@@ -29,6 +29,8 @@ export default function Navbar() {
         <div className="relative flex-1 max-w-md">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94a3b8]" />
           <input
+            id="global-search"
+            name="global-search"
             type="text"
             placeholder="Search markets, symbols, news..."
             className="w-full bg-[#ffffff08] border border-[#ffffff10] rounded-xl py-2 pl-10 pr-4 text-sm text-white placeholder-[#94a3b8] focus:outline-none focus:border-[#a855f7]/40 focus:bg-[#ffffff10] transition-all"
