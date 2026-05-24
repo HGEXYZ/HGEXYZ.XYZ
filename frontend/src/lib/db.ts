@@ -14,14 +14,14 @@ const users = new Map<string, User>()
 
 export async function findUserByEmail(email: string): Promise<User | undefined> {
   const normalized = email.toLowerCase()
-  for (const user of users.values()) {
+  for (const user of Array.from(users.values())) {
     if (user.email === normalized) return user
   }
   return undefined
 }
 
 export async function findUserByUsername(username: string): Promise<User | undefined> {
-  for (const user of users.values()) {
+  for (const user of Array.from(users.values())) {
     if (user.username === username) return user
   }
   return undefined
