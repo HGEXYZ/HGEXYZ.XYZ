@@ -4,6 +4,7 @@ import { AuthProvider } from '@/components/AuthContext'
 import AppShell from '@/components/AppShell'
 import AnimatedCursor from '@/components/AnimatedCursor'
 import ParticlesBackground from '@/components/ParticlesBackground'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 export const metadata: Metadata = {
   title: 'HGEXYZ — Next Generation AI Trading Ecosystem',
@@ -23,6 +24,7 @@ export default function RootLayout({
         <AuthProvider>
           <AppShell>{children}</AppShell>
         </AuthProvider>
+        <SpeedInsights />
       </body>
     </html>
   )
