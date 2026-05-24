@@ -1,25 +1,26 @@
 import { NextResponse } from 'next/server'
 import { verifyToken } from '@/lib/auth'
 import { findUserById } from '@/lib/db'
-import { cookies } from 'next/headers'
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const cookieStore = await cookies()
-    const token = cookieStore.get('token')?.value
+    const cookieHeader = req.headers.get('cookie') || ''
+    const token = cookieHeader.split(';')
+      .find((c) => c.trim().startsWith('token='))
+      ?.split('=')[1]
 
     if (!token) {
-      return NextResponse.json({ user: null }, { status: 200 })
+      return NextResponse.json({ user: null })
     }
 
     const payload = await verifyToken(token)
     if (!payload) {
-      return NextResponse.json({ user: null }, { status: 200 })
+      return NextResponse.json({ user: null })
     }
 
     const user = await findUserById(payload.userId)
     if (!user) {
-      return NextResponse.json({ user: null }, { status: 200 })
+      return NextResponse.json({ user: null })
     }
 
     return NextResponse.json({
@@ -36,6 +37,6 @@ export async function GET() {
     })
   } catch (error) {
     console.error('Me error:', error)
-    return NextResponse.json({ user: null }, { status: 200 })
+    return NextResponse.json({ user: null })
   }
 }

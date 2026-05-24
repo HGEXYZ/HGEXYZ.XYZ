@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { hashPassword, signToken } from '@/lib/auth'
 import { createUser, findUserByEmail, findUserByUsername } from '@/lib/db'
-import { cookies } from 'next/headers'
 
 export async function POST(req: Request) {
   try {
@@ -47,16 +46,7 @@ export async function POST(req: Request) {
 
     const token = await signToken({ userId: id, email: user.email })
 
-    const cookieStore = await cookies()
-    cookieStore.set('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 604800,
-    })
-
-    return NextResponse.json({
+    const res = NextResponse.json({
       user: {
         id: user.id,
         username: user.username,
@@ -68,6 +58,16 @@ export async function POST(req: Request) {
         lastLogin: user.lastLogin,
       },
     })
+
+    res.cookies.set('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 604800,
+    })
+
+    return res
   } catch (error) {
     console.error('Signup error:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
