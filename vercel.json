@@ -1,0 +1,11 @@
+{
+  "experimentalServices": {
+    "hgexyz-xyz": {
+      "type": "web",
+      "root": "frontend",
+      "routePrefix": "/",
+      "framework": "nextjs",
+      "buildCommand": "npm install && npm run build"
+    }
+  }
+}

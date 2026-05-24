@@ -1,11 +1,13 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import Navbar from '@/components/Navbar'
-import Sidebar from '@/components/Sidebar'
+import { AuthProvider } from '@/components/AuthContext'
+import AppShell from '@/components/AppShell'
+import AnimatedCursor from '@/components/AnimatedCursor'
+import ParticlesBackground from '@/components/ParticlesBackground'
 
 export const metadata: Metadata = {
-  title: 'HGEXYZ — AI Trading Intelligence Platform',
-  description: 'Revolutionizing the Future of Trading Intelligence',
+  title: 'HGEXYZ — Next Generation AI Trading Ecosystem',
+  description: 'Advanced AI-powered trading tools, analytics, automation, and smart execution in one platform.',
 }
 
 export default function RootLayout({
@@ -15,16 +17,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="antialiased min-h-screen">
-        <div className="flex">
-          <Sidebar />
-          <div className="flex-1 min-w-0 flex flex-col">
-            <Navbar />
-            <main className="px-5 py-5">
-              {children}
-            </main>
-          </div>
-        </div>
+      <body className="antialiased min-h-screen bg-[#050505] text-white">
+        <AnimatedCursor />
+        <ParticlesBackground />
+        <AuthProvider>
+          <AppShell>{children}</AppShell>
+        </AuthProvider>
       </body>
     </html>
   )

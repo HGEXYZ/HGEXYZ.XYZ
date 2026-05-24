@@ -3,10 +3,11 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import { LayoutDashboard, TrendingUp, Calendar, Radio, Settings, ChevronLeft, ChevronRight, BrainCircuit, BarChart3, Landmark, Newspaper } from 'lucide-react'
+import { LayoutDashboard, TrendingUp, Calendar, Settings, ChevronLeft, ChevronRight, BrainCircuit, BarChart3, Landmark, Newspaper, LogOut } from 'lucide-react'
+import { useAuth } from '@/components/AuthContext'
 
 const navItems = [
-  { href: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/markets', label: 'Markets', icon: BarChart3 },
   { href: '/ai-terminal', label: 'AI Terminal', icon: BrainCircuit },
   { href: '/fed-monitor', label: 'Fed Monitor', icon: Landmark },
@@ -17,6 +18,7 @@ const navItems = [
 export default function Sidebar() {
   const pathname = usePathname()
   const [collapsed, setCollapsed] = useState(false)
+  const { user, logout } = useAuth()
   const isChart = pathname.startsWith('/chart')
   if (isChart) return null
 
@@ -65,9 +67,23 @@ export default function Sidebar() {
         </nav>
 
         <div className={`flex flex-col gap-1 mt-auto ${collapsed ? 'items-center' : ''}`}>
+          {user && (
+            <div className={`flex items-center gap-3 px-3 py-2 mb-1 ${collapsed ? 'justify-center' : ''}`}>
+              {!collapsed && (
+                <div className="flex-1 min-w-0">
+                  <div className="text-xs font-mono text-[#94a3b8] truncate">{user.username}</div>
+                  <div className="text-[10px] font-mono text-[#a855f7]">{user.subscriptionPlan}</div>
+                </div>
+              )}
+            </div>
+          )}
           <button className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-[#94a3b8] hover:text-white hover:bg-white/5 transition-all duration-200 ${collapsed ? 'justify-center' : ''}`}>
             <Settings size={20} />
             {!collapsed && <span className="text-sm font-medium">Settings</span>}
+          </button>
+          <button onClick={logout} className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-[#94a3b8] hover:text-[#ef4444] hover:bg-[#ef4444]/10 transition-all duration-200 ${collapsed ? 'justify-center' : ''}`}>
+            <LogOut size={20} />
+            {!collapsed && <span className="text-sm font-medium">Logout</span>}
           </button>
         </div>
 
